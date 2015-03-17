@@ -8,35 +8,50 @@
 
 
 <script>
-chatRoom = {};
-chatRoom.createNewChatClient = function(serverAddress, chatPort){
+fayeUtility = { client: ""};
+fayeUtility.createNewChatClient = function(serverAddress, chatPort){
   var client = new Faye.Client('http://' + serverAddress + ':' + chatPort + '/faye', {
     timeout: 120
   });
   client.bind('transport:down', function() {
-    //alert('Warning:  The connection has been lost.' + betaMessage);
-    chatRoom.setStatusToFailed();
+    alert('Warning:  The connection has been lost.' + betaMessage);
+    //fayeUtility.setStatusToFailed();
   });
   client.bind('transport:up', function() {
-    chatRoom.setStatusToConnected();
+    printToConsole("Connected to Faye");
+    //fayeUtility.setStatusToConnected();
   });
 
   return client;
 }
 
 
-var client = chatRoom.createNewChatClient("localhost", "9292");
+var client = fayeUtility.createNewChatClient("localhost", "9292");
 var channel = "0001";
 
-client.publish('/' + channel, {text: 'msg'})
-</script>
 
-<h1>Example Faye</h1>
+function printToConsole(msg){
+  var el = document.getElementById('console');
+  el.innerHTML = el.innerHTML + "<div>" + msg + "</div>";
+}
 
-<button onclick="client.publish('/' + channel, {text: 'msg'})">Click to transmit Message to all subscribers</button>
+subscription = client.subscribe('/' + channel, function(message) {
+  printToConsole(JSON.stringify(message));
+});
+
+function publish_message_to_faye(msg){
+  client.publish('/' + channel, {text: msg});
+}
+
+</script> 
+
+
+<h1>Simple Faye Javascript Example</h1>
+
+<button onclick="publish_message_to_faye('Hello Server')">Click to transmit Message to all subscribers</button>
 
 <h6>Messages from faye server go here:</h6>
-<div class="console"></div>
+<div id="console"></div>
 </body>
 
 </html>

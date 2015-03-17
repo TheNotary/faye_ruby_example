@@ -9,6 +9,7 @@ $auth_token = "secret"
 $client = ""
 $last_msg = ""
 $c_msgs = 0
+$channel_to_send_to = '0001'
 
 def main_loop
   EM.defer do
@@ -28,7 +29,8 @@ end
 def print_variables
     puts "** VARIABLES **"
     puts " Auth Token: #{$auth_token}"
-    puts " Subscribed Channels: #{$client.instance_eval('@channels.keys')}"
+    puts " Channels to Listen to: #{$client.instance_eval('@channels.keys')}"
+    puts " Channel to Send to: #{$channel_to_send_to}"
     puts " Last Message: #{$last_msg}"
     puts " Number of Msgs Recieved so Far: #{$c_msgs}"
     puts
@@ -69,7 +71,7 @@ def gui_send_msg
   
   puts "sending message..."
 
-  $client.publish('/lkasjdA', 'text' => "LOUD NOISES", moreData: "make_this_font_huge")
+  $client.publish("/#{$channel_to_send_to}", 'text' => "LOUD NOISES", moreData: "make_this_font_huge")
 
   gets
 end
