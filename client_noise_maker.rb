@@ -8,8 +8,7 @@ require 'pry'
 $auth_token = "secret"
 $client = ""
 $last_msg = ""
-
-
+$c_msgs = 0
 
 def main_loop
   EM.defer do
@@ -31,6 +30,7 @@ def print_variables
     puts " Auth Token: #{$auth_token}"
     puts " Subscribed Channels: #{$client.instance_eval('@channels.keys')}"
     puts " Last Message: #{$last_msg}"
+    puts " Number of Msgs Recieved so Far: #{$c_msgs}"
     puts
 end
 
@@ -69,7 +69,7 @@ def gui_send_msg
   
   puts "sending message..."
 
-  $client.publish('/lkasjdA', 'text' => "LOUD NOISES", authToken: "secret")
+  $client.publish('/lkasjdA', 'text' => "LOUD NOISES", moreData: "make_this_font_huge")
 
   gets
 end
@@ -124,6 +124,7 @@ end
 def subscribe_to_all
   EM.defer do
     res = $client.subscribe('/**') do |message|
+      $c_msgs += 1
       $last_msg = message.inspect
       puts message.inspect
     end

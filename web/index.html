@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+
+<body>
+  
+  The chat UI will be below this line
+  <br>
+  <div class="chat_ui">Eventually this should be built in javascript...</div>
+  
+  
+  
+  
+  
+  <div class='chat-user-info'>
+	  Name:  <input id='input-name' type="text" placeholder="<%= @client_name %>">
+	  <button id='btn-change-name' onclick='chatInterface.btnChangeName();'>Change</button>
+  </div>
+
+  <div>Status:  <span id='chat-status'>connecting...</span></div>
+  <div class='chatroom-encapsulator'>
+	
+	  <div class='chatEncapsulator adminChat chatShowing' data-room_hash='1'>
+		  <div class='chat-msgs'>
+			  <p class='loading_statement'>We are currently connecting you with a specialist...  You can send messages now by typing them in below.  If no sales professionals join in the next 30 seconds, please call us at 952-474-5605 and we will gladly help you over the phone. <%# @room_hash %></p>
+			
+			  <p id='admins_logged_on'></p>
+		  </div>
+		  <div class="chatConsole">
+			  <div class="user-is-typing hidden">User Is Typing...</div>
+			  <textarea id="chat-message" class="real_time_interaction_msg" name="real_time_interaction[msg]" onkeyup="handleKeyUp(event, this)" onkeydown="handleKeyDown(event,this)"></textarea>
+			  <button class='btn-custom btn-send' onclick='chatRoom.submitMessage(this)'>Submit <br>(enter)</button>
+		  </div>
+	  </div>
+	
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  <script src="webAudioApiForDesigners/webAudioApiForDesigners.js"></script>
+  <script src="jquery-1.8.3.min.js"></script>
+  <script src="jquery.base64.min.js"></script>
+  <script src="faye/client.js"></script>
+  <script src="faye-chat/faye-chat-admin.js"></script>
+  <script src="faye-chat/faye-chat.js"></script>
+  
+  
+<script>
+var chatServer = window.location.hostname;
+if (chatServer == "") chatServer = "localhost";
+
+var chatPort = '9292';
+if (myRole == undefined){
+	// admin specific code could go here too...
+	var myRole = 'admin';
+}
+//else{
+	// client specific code goes here...
+	window.onbeforeunload = function(){
+		chatRoom.signalThatClientIsBrowsingAway(chatRoom.getRoomHash());
+		//return "Are you sure you're ready to end the chat session?";
+	};
+//}
+
+var fayeClient = chatRoom.createNewChatClient();
+var chatSubscriptions = new Array();  // this is used in other file
+
+
+
+setTimeout(checkIfConnectionFailed, 3000);
+</script>
+  
+
+</body>
+
+
+</html
