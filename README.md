@@ -21,6 +21,8 @@ This is an example demo for working with the old version of faye (0.8.6) that's 
 
 ## Working with faye from the browser world
 
+Just open the web/index.html file in firefox.  
+If your faye_server.rb is running, then you should be able to connect and push the button to see that the messages are getting to the server and coming back to the client.
 
 
 ## Starting it in the node.js World
